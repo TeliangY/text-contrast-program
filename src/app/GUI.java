@@ -1,9 +1,7 @@
 package app;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -23,13 +21,10 @@ import javax.swing.event.DocumentListener;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 
 public class GUI {
     
@@ -37,8 +32,6 @@ public class GUI {
     private JFrame mainFrame = new JFrame();
     private JPanel mainPanel = new JPanel();
     private JLabel mainText = new JLabel();
-    private Color bgColor = new Color(84, 213, 233);
-    private Color textBgColor = new Color(84, 213, 233);
     private int sliderDirection = JSlider.HORIZONTAL;
     private int sliderMin = 0;
     private int sliderMax = 255;
@@ -66,8 +59,7 @@ public class GUI {
 
     public GUI() {
         mainPanel.setBackground(new Color(red, green, blue));
-        // mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-        mainPanel.setLayout(new FlowLayout(5));
+        mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 
         JPanel leftPanel = new JPanel();
         leftPanel.add(getSliders());
@@ -81,9 +73,9 @@ public class GUI {
 
         mainPanel.add(leftPanel);
         mainPanel.add(rightPanel);
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 20));
 
-        ImageIcon icon = new ImageIcon("src/resources/java-icon.png");
+        ImageIcon icon = new ImageIcon("src/resources/icon.png");
 
         mainFrame.setIconImage(icon.getImage());
         mainFrame.add(mainPanel, BorderLayout.CENTER);
@@ -110,24 +102,21 @@ public class GUI {
 
     private JComponent getTextPanel() {
         JPanel panel = new JPanel();
-        JPanel textPanel = new JPanel();
         JLabel description = new JLabel("Click textbox to change its color.");
         JLabel text = new JLabel("Text");
 
+        this.mainText = text;
         description.setFont(new Font("sans-serif", Font.PLAIN, 36));
-        text.setFont(new Font("serif", Font.PLAIN, 108));
+        text.setFont(new Font("serif", Font.PLAIN, 148));
         text.setForeground(new Color(255 - red, 255 - green, 255 - blue));
 
-        textPanel.add(text);
-        // textPanel.setBackground(textBgColor);
-        textPanel.setOpaque(false);
-
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         panel.add(description);
-        panel.add(textPanel);
+        panel.add(text);
+
         panel.setOpaque(false);
- 
-        this.mainText = text;
+
         return panel;
     }
 
@@ -154,21 +143,25 @@ public class GUI {
         gTextField.setText(String.valueOf(green));
         bTextField.setText(String.valueOf(blue));
 
-        // addTextFieldCL(rTextField, "red");
-        // addTextFieldCL(gTextField, "green");
-        // addTextFieldCL(bTextField, "blue");
+        rTextField.setFont(new Font("sans-serif", Font.PLAIN, 36));
+        gTextField.setFont(new Font("sans-serif", Font.PLAIN, 36));
+        bTextField.setFont(new Font("sans-serif", Font.PLAIN, 36));
 
         rColorSquare.setBackground(new Color(red, 0, 0));
         gColorSquare.setBackground(new Color(0, green, 0));
         bColorSquare.setBackground(new Color(0, 0, blue));
 
+        rColorSquare.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        gColorSquare.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        bColorSquare.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         JLabel rLabel = new JLabel("R");
         JLabel gLabel = new JLabel("G");
         JLabel bLabel = new JLabel("B");
 
-        rLabel.setFont(new Font("sans-serif", Font.PLAIN, 24));
-        gLabel.setFont(new Font("sans-serif", Font.PLAIN, 24));
-        bLabel.setFont(new Font("sans-serif", Font.PLAIN, 24));
+        rLabel.setFont(new Font("sans-serif", Font.PLAIN, 36));
+        gLabel.setFont(new Font("sans-serif", Font.PLAIN, 36));
+        bLabel.setFont(new Font("sans-serif", Font.PLAIN, 36));
 
         JPanel rLabelPanel = new JPanel();
         JPanel gLabelPanel = new JPanel();
@@ -202,7 +195,6 @@ public class GUI {
         bPanel.setOpaque(false);
 
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setBackground(Color.WHITE);
         panel.add(rPanel);
         panel.add(gPanel);
@@ -215,6 +207,10 @@ public class GUI {
         Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
         JLabel minLabel = new JLabel("0");
         JLabel maxLabel = new JLabel("255");
+
+        minLabel.setFont(new Font("sans-serif", Font.PLAIN, 18));
+        maxLabel.setFont(new Font("sans-serif", Font.PLAIN, 18));
+
         labelTable.put(new Integer(sliderMin), minLabel);
         labelTable.put(new Integer(sliderMax), maxLabel);
 
@@ -223,6 +219,7 @@ public class GUI {
         slider.setLabelTable(labelTable);
         slider.setPaintLabels(true);
         slider.setPaintTicks(true);
+        
         slider.setOpaque(false);
         
         switch(color) {
@@ -400,14 +397,22 @@ public class GUI {
 
         JLabel aboutContent = new JLabel(aboutText);
         JPanel contentPanel = new JPanel();
-        aboutContent.setFont(new Font("sans-serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+        aboutContent.setFont(new Font("sans-serif", Font.LAYOUT_LEFT_TO_RIGHT, 26));
         contentPanel.add(aboutContent);
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 30));
 
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JOptionPane.showMessageDialog(mainFrame, contentPanel, "About", JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showOptionDialog(
+                    null, 
+                    contentPanel, 
+                    "About", JOptionPane.DEFAULT_OPTION, 
+                    JOptionPane.PLAIN_MESSAGE, 
+                    null, 
+                    new Object[]{}, 
+                    null
+                );
             }
         });
 
