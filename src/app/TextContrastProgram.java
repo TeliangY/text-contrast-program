@@ -16,16 +16,18 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.MouseInputAdapter;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.Hashtable;
 import java.awt.FlowLayout;
 
-public class GUI {
-    
+public class TextContrastProgram {
+
     // General program components
     ImageIcon icon = new ImageIcon("src/resources/icon.png");
     private String title = "Use sliders or click window to choose window color.";
@@ -33,6 +35,7 @@ public class GUI {
     private JLabel mainText = new JLabel();
     private JPanel mainPanel;
     private JMenuBar menuBar;
+    private ColorPicker colorPicker = new ColorPicker();
 
     // Slider parameters
     private int sliderDirection = JSlider.HORIZONTAL;
@@ -41,9 +44,14 @@ public class GUI {
     private int sliderFPS = 15;
 
     // Slider RGB color values
-    private int red = 255;
-    private int green = 255;
-    private int blue = 255;
+    private int sliderRed = 255;
+    private int sliderGreen = 255;
+    private int sliderBlue = 255;
+
+    // Text RGB color values
+    private int textRed = 0;
+    private int textGreen = 0;
+    private int textBlue = 0;
 
     // RGB sliders
     private JSlider rSlider;
@@ -66,7 +74,7 @@ public class GUI {
     /**
      * Constructor that initializes everything
      */
-    public GUI() {
+    public TextContrastProgram() {
         // Create a main container
         mainPanel = new JPanel();
 
@@ -85,7 +93,7 @@ public class GUI {
         rightPanel.setOpaque(false);
 
         // The background color will change based on red, green and blue value
-        mainPanel.setBackground(new Color(red, green, blue));
+        mainPanel.setBackground(new Color(sliderRed, sliderGreen, sliderBlue));
         mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 20));
         mainFrame.setIconImage(icon.getImage());
@@ -114,10 +122,11 @@ public class GUI {
     }
 
     /**
-     * This function returns a container which contains "Text", this "Text" color is contrast
-     * against to the background color.
+     * This function returns a container which contains "Text", this "Text" color is
+     * contrast against to the background color.
      * 
-     * @return A container that contains a Text, with contrast color against the background
+     * @return A container that contains a Text, with contrast color against the
+     *         background
      */
     private JPanel getTextPanel() {
         JPanel panel = new JPanel();
@@ -125,12 +134,34 @@ public class GUI {
         this.mainText = new JLabel("Text");
         description.setFont(new Font("sans-serif", Font.PLAIN, 36));
         mainText.setFont(new Font("serif", Font.PLAIN, 148));
-        mainText.setForeground(new Color(255 - red, 255 - green, 255 - blue));
+
+        // Initialize Text color
+        textRed = sliderMax - sliderRed;
+        textGreen = sliderMax - sliderGreen;
+        textBlue = sliderMax - sliderBlue;
+        mainText.setForeground(new Color(textRed, textGreen, textBlue));
+
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         panel.add(description);
         panel.add(mainText);
         panel.setOpaque(false);
+
+        // Click on the Text container, a color picker will show up
+        panel.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Color color = colorPicker.showColorPicker();
+                if (color == null) {
+                    return;
+                }
+                textRed = color.getRed();
+                textGreen = color.getGreen();
+                textBlue = color.getBlue();
+                mainText.setForeground(new Color(textRed, textGreen, textBlue));
+            }
+        });
+
         return panel;
     }
 
@@ -158,22 +189,22 @@ public class GUI {
         rTextField = new JTextField(3);
         gTextField = new JTextField(3);
         bTextField = new JTextField(3);
-        rTextField.setText(String.valueOf(red));
+        rTextField.setText(String.valueOf(sliderRed));
         rTextField.setFont(new Font("sans-serif", Font.PLAIN, 36));
-        gTextField.setText(String.valueOf(green));
+        gTextField.setText(String.valueOf(sliderGreen));
         gTextField.setFont(new Font("sans-serif", Font.PLAIN, 36));
-        bTextField.setText(String.valueOf(blue));
+        bTextField.setText(String.valueOf(sliderBlue));
         bTextField.setFont(new Font("sans-serif", Font.PLAIN, 36));
 
         // These squares display the current color for each RBG sliders
         rColorSquare = new JPanel();
         gColorSquare = new JPanel();
         bColorSquare = new JPanel();
-        rColorSquare.setBackground(new Color(red, 0, 0));
+        rColorSquare.setBackground(new Color(sliderRed, 0, 0));
         rColorSquare.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        gColorSquare.setBackground(new Color(0, green, 0));
+        gColorSquare.setBackground(new Color(0, sliderGreen, 0));
         gColorSquare.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        bColorSquare.setBackground(new Color(0, 0, blue));
+        bColorSquare.setBackground(new Color(0, 0, sliderBlue));
         bColorSquare.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Create RBG sliders labels
@@ -247,15 +278,15 @@ public class GUI {
 
         switch(color) {
             case RED:
-                slider.setValue(red);
+                slider.setValue(sliderRed);
                 addSliderCL(slider, Colors.RED);
                 break;
             case GREEN:
-                slider.setValue(green);
+                slider.setValue(sliderGreen);
                 addSliderCL(slider, Colors.GREEN);
                 break;
             case BLUE:
-                slider.setValue(blue);
+                slider.setValue(sliderBlue);
                 addSliderCL(slider, Colors.BLUE);
                 break;
             default:
@@ -279,11 +310,14 @@ public class GUI {
                     @Override
                     public void stateChanged(ChangeEvent e) {
                         JSlider slider = (JSlider) e.getSource();
-                        red = slider.getValue();
-                        mainPanel.setBackground(new Color(red, green, blue));
-                        mainText.setForeground(new Color(255 - red, 255 - green, 255 - blue));
-                        rTextField.setText(String.valueOf(red));
-                        rColorSquare.setBackground(new Color(red, 0, 0));
+                        sliderRed = slider.getValue();
+                        mainPanel.setBackground(new Color(sliderRed, sliderGreen, sliderBlue));
+                        textRed = sliderMax - sliderRed;
+                        textGreen = sliderMax - sliderGreen;
+                        textBlue = sliderMax - sliderBlue;
+                        mainText.setForeground(new Color(textRed, textGreen, textBlue));
+                        rTextField.setText(String.valueOf(sliderRed));
+                        rColorSquare.setBackground(new Color(sliderRed, 0, 0));
                     }
                 });
                 break;
@@ -294,11 +328,14 @@ public class GUI {
                     @Override
                     public void stateChanged(ChangeEvent e) {
                         JSlider slider = (JSlider) e.getSource();
-                        green = slider.getValue();
-                        mainPanel.setBackground(new Color(red, green, blue));
-                        mainText.setForeground(new Color(255 - red, 255 - green, 255 - blue));
-                        gTextField.setText(String.valueOf(green));
-                        gColorSquare.setBackground(new Color(0, green, 0));
+                        sliderGreen = slider.getValue();
+                        mainPanel.setBackground(new Color(sliderRed, sliderGreen, sliderBlue));
+                        textRed = sliderMax - sliderRed;
+                        textGreen = sliderMax - sliderGreen;
+                        textBlue = sliderMax - sliderBlue;
+                        mainText.setForeground(new Color(textRed, textGreen, textBlue));
+                        gTextField.setText(String.valueOf(sliderGreen));
+                        gColorSquare.setBackground(new Color(0, sliderGreen, 0));
                     }
                 });
                 break;
@@ -309,11 +346,14 @@ public class GUI {
                     @Override
                     public void stateChanged(ChangeEvent e) {
                         JSlider slider = (JSlider) e.getSource();
-                        blue = slider.getValue();
-                        mainPanel.setBackground(new Color(red, green, blue));
-                        mainText.setForeground(new Color(255 - red, 255 - green, 255 - blue));
-                        bTextField.setText(String.valueOf(blue));
-                        bColorSquare.setBackground(new Color(0, 0, blue));
+                        sliderBlue = slider.getValue();
+                        mainPanel.setBackground(new Color(sliderRed, sliderGreen, sliderBlue));
+                        textRed = sliderMax - sliderRed;
+                        textGreen = sliderMax - sliderGreen;
+                        textBlue = sliderMax - sliderBlue;
+                        mainText.setForeground(new Color(textRed, textGreen, textBlue));
+                        bTextField.setText(String.valueOf(sliderBlue));
+                        bColorSquare.setBackground(new Color(0, 0, sliderBlue));
                     }
                 });
                 break;
