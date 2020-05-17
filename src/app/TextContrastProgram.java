@@ -22,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
 import java.awt.FlowLayout;
@@ -89,7 +90,7 @@ public class TextContrastProgram {
         leftPanel.setOpaque(false);
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.add(getTextPanel());
-        rightPanel.add(getButton("Quit"));
+        rightPanel.add(getQuitButton());
         rightPanel.setOpaque(false);
 
         // The background color will change based on red, green and blue value
@@ -107,10 +108,10 @@ public class TextContrastProgram {
 
     /**
      * 
-     * @param name The text displayed on the button
-     * @return A JButton component
+     * @return A JButton in a contianer, and when clicked, the program exits
      */
-    private JComponent getButton(String name) {
+    private JPanel getQuitButton() {
+        String name = "Quit";
         JPanel panel = new JPanel();
         JButton button = new JButton(name);
         button.setFont(new Font("sans-serif", Font.PLAIN, 36));
@@ -118,6 +119,15 @@ public class TextContrastProgram {
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         panel.add(button);
         panel.setOpaque(false);
+
+        // When clicking the button, program exits
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
         return panel;
     }
 
