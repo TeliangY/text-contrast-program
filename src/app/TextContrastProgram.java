@@ -4,7 +4,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -206,6 +205,11 @@ public class TextContrastProgram {
         bTextField.setText(String.valueOf(sliderBlue));
         bTextField.setFont(new Font("sans-serif", Font.PLAIN, 36));
 
+        // Add action event listener to text fields
+        addTextFieldCL(rTextField, Colors.RED);
+        addTextFieldCL(gTextField, Colors.GREEN);
+        addTextFieldCL(bTextField, Colors.BLUE);
+
         // These squares display the current color for each RBG sliders
         rColorSquare = new JPanel();
         gColorSquare = new JPanel();
@@ -368,6 +372,65 @@ public class TextContrastProgram {
                 });
                 break;
 
+            default:
+                break;
+        }
+    }
+
+    /**
+     * This function adds action listener to the textfields that display color values for sliders.
+     * When change values in textfields and hit enter, the color value changes.
+     * 
+     * @param tf Textfield that displays the RGB value for sliders
+     * @param color Colors enumeration to define which RGB textfield we are adding listeners to
+     */
+    private void addTextFieldCL(JTextField tf, Colors color) {
+        switch(color) {
+            case RED:
+                tf.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            sliderRed = Integer.parseInt(tf.getText());
+                        } catch (NumberFormatException exception) {
+
+                        } finally {
+                            rTextField.setText(String.valueOf(sliderRed));
+                            rSlider.setValue(sliderRed);
+                        }
+                    }
+                });
+                break;
+            case GREEN:
+                tf.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            sliderGreen = Integer.parseInt(tf.getText());
+                        } catch (NumberFormatException exception) {
+
+                        } finally {
+                            gTextField.setText(String.valueOf(sliderGreen));
+                            gSlider.setValue(sliderGreen);
+                        }
+                    }
+                });
+                break;
+            case BLUE:
+                tf.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            sliderBlue = Integer.parseInt(tf.getText());
+                        } catch (NumberFormatException exception) {
+
+                        } finally {
+                            bTextField.setText(String.valueOf(sliderBlue));
+                            bSlider.setValue(sliderBlue);
+                        }
+                    }
+                });
+                break;
             default:
                 break;
         }
