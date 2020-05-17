@@ -1,4 +1,4 @@
-package app;
+package app.components;
 
 import javax.swing.JColorChooser;
 import java.awt.Color;

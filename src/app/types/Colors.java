@@ -1,4 +1,4 @@
-package app;
+package app.types;
 
 public enum Colors {
     RED,
