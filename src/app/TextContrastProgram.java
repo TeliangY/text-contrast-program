@@ -78,6 +78,21 @@ public class TextContrastProgram {
         // Create a main container
         mainPanel = new JPanel();
 
+        // Click on the background, a color pick will show up for background color
+        mainPanel.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Color color = colorPicker.showColorPicker();
+                if (color == null) {
+                    return;
+                }
+                rSlider.setValue(color.getRed());
+                gSlider.setValue(color.getGreen());
+                bSlider.setValue(color.getBlue());
+                mainPanel.setBackground(new Color(sliderRed, sliderGreen, sliderBlue));
+            }
+        });
+
         // Divide application into left side, and right side
         JPanel leftPanel = new JPanel();
         JPanel rightPanel = new JPanel();
@@ -156,8 +171,8 @@ public class TextContrastProgram {
         panel.add(mainText);
         panel.setOpaque(false);
 
-        // Click on the Text container, a color picker will show up
-        panel.addMouseListener(new MouseInputAdapter() {
+        // Click on the Text, a color picker will show up
+        mainText.addMouseListener(new MouseInputAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Color color = colorPicker.showColorPicker();
