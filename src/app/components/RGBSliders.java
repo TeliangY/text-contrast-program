@@ -87,11 +87,11 @@ public class RGBSliders {
         gTextField = new JTextField(3);
         bTextField = new JTextField(3);
         rTextField.setText(String.valueOf(sliderRed));
-        rTextField.setFont(new Font("sans-serif", Font.PLAIN, 36));
+        rTextField.setFont(new Font("sans-serif", Font.PLAIN, 26));
         gTextField.setText(String.valueOf(sliderGreen));
-        gTextField.setFont(new Font("sans-serif", Font.PLAIN, 36));
+        gTextField.setFont(new Font("sans-serif", Font.PLAIN, 26));
         bTextField.setText(String.valueOf(sliderBlue));
-        bTextField.setFont(new Font("sans-serif", Font.PLAIN, 36));
+        bTextField.setFont(new Font("sans-serif", Font.PLAIN, 26));
 
         // Add action event listener to text fields
         addTextFieldCL(rTextField, Colors.RED);
@@ -119,9 +119,9 @@ public class RGBSliders {
         JLabel rLabel = new JLabel("R");
         JLabel gLabel = new JLabel("G");
         JLabel bLabel = new JLabel("B");
-        rLabel.setFont(new Font("sans-serif", Font.PLAIN, 36));
-        gLabel.setFont(new Font("sans-serif", Font.PLAIN, 36));
-        bLabel.setFont(new Font("sans-serif", Font.PLAIN, 36));
+        rLabel.setFont(new Font("sans-serif", Font.PLAIN, 26));
+        gLabel.setFont(new Font("sans-serif", Font.PLAIN, 26));
+        bLabel.setFont(new Font("sans-serif", Font.PLAIN, 26));
         rLabelPanel.add(rLabel);
         gLabelPanel.add(gLabel);
         bLabelPanel.add(bLabel);
