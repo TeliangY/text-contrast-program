@@ -8,6 +8,33 @@ A Java program which allows users to play with text and background color to test
 
 Download or git clone this repo and run it with Java 8 or higher versions.
 
+## Compile the Program
+
+Run this command on the root folder of the source code.
+
+```
+javac -cp src -d bin src/app/App.java
+```
+
+.class files will be generated in the bin folder.
+
+Then type this command to create a .jar file:
+
+```
+cd bin
+jar cfe text.jar app.App *
+```
+
+A .jar file named **text.jar** will be created.
+
+## Run the Program
+
+After we get **text.jar** file from compilation, we can use the following command to run the .jar file:
+
+```
+java -jar text.jar
+```
+
 ## Usage Examples
 
 ![](program_screenshot.PNG)
